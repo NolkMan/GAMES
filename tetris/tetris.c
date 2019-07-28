@@ -65,6 +65,16 @@ const char DIGITS[10][5][6] = {
 	 " ### "},
 };
 
+void draw_border(int y, int x){
+	attron(COLOR_PAIR(2));
+	mvprintw(y,x*2,"            ");
+	for (int i=0 ; i < 4; i++){
+		mvprintw(y+1+i, x*2, "  ");
+		mvprintw(y+1+i, x*2+10, "  ");
+	}
+	mvprintw(y+5,x*2,"            ");
+}
+
 void draw_controls(int y, int x, int primary_color, int secondary_color, char up, char down, char left, char right){
 	attron(COLOR_PAIR(secondary_color));
 	mvprintw(y,  x+3,"     ");
@@ -453,15 +463,22 @@ void death_screen(){
 	usleep(5000000);
 }
 
+void shift_pool(int *pool){
+	for (int i =0 ; i < 7; i++){
+		pool[i] = pool[i+7];
+	}
+}
+
 void game_loop(){
 	int score = 0;
 	int board[26][14];
 	int frame = 0;
 	setup_board(board);
 
-	int pool[7];
+	int pool[14];
 	int pool_index = 0;
 	randomize_pool(pool);
+	randomize_pool(pool+7);
 
 	int running = TRUE;
 
@@ -492,8 +509,10 @@ void game_loop(){
 				y = 0;
 				x = 6;
 				if (pool_index >= 7){
+					
 					pool_index = 0;
-					randomize_pool(pool);
+					shift_pool(pool);
+					randomize_pool(pool+7);
 				}
 				int s = check_for_lines(board);
 				score += s*s;
@@ -514,6 +533,8 @@ void game_loop(){
 
 		draw_board(board, 3, 3);
 		draw_piece(3+y,3+x,piece, rot);
+		draw_border(3+4, 3+13);
+		draw_piece(3+5, 3+14, pool[pool_index+1], 0);
 
 		int sco = score;
 		for (int i=0 ; i <4; i++){
@@ -538,13 +559,15 @@ void p2_game_loop(){
 	setup_board(board[1]);
 	setup_board(board[0]);
 
-	int pool[2][7];
+	int pool[2][14];
 	int pool_index[2];
 	pool_index[0] = 0;
 	pool_index[1] = 0;
 
 	randomize_pool(pool[1]);
+	randomize_pool(pool[1]+7);
 	randomize_pool(pool[0]);
+	randomize_pool(pool[0]+7);
 
 	int boardx[2];
 	boardx[0] = (cols/2-13)/2;
@@ -597,7 +620,8 @@ void p2_game_loop(){
 					x[i] = 6;
 					if (pool_index[i] >= 7){
 						pool_index[i] = 0;
-						randomize_pool(pool[i]);
+						shift_pool(pool[i]);
+						randomize_pool(pool[i]+7);
 					}
 					int sc = check_for_lines(board[i]);
 					score[i] += sc * sc;
@@ -619,6 +643,9 @@ void p2_game_loop(){
 		for (int i=0 ; i < 2; i++){
 			draw_board(board[i], 0, boardx[i]);
 			draw_piece(0+y[i],boardx[i]+x[i],piece[i], rot[i]);
+			draw_border(4,boardx[i]+13);
+			draw_piece(5,boardx[i]+14,pool[i][pool_index[i]+1],0);
+
 			int sc = score[i];
 			for (int j=0 ; j < 4; j++){
 				int dig = sc%10;
