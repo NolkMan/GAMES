@@ -1,8 +1,8 @@
-#GAMES
+# GAMES
 
 This whole repository is a collection of small games made in c using only ncurses. All packed in a single file.
 
-###Compiling
+### Compiling
 
 Games can be compiled using cmake in standard fasion
 ```bash
