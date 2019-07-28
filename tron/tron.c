@@ -249,7 +249,7 @@ int game_loop(int no_players){
 		p_data[0].dy = p_data[1].dy = 0;
 	}
 	if (no_players == 3){
-		p_data[0].x = 4; p_data[1].x = cols-5; p_data[1].x = cols/2;
+		p_data[0].x = 4; p_data[1].x = cols-5; p_data[2].x = cols/2;
 		p_data[0].y = p_data[1].y = rows - 5; p_data[2].y = 4;
 		p_data[0].dx = 1; p_data[1].dx = -1;p_data[2].dx = 0;
 		p_data[0].dy = p_data[1].dy = 0; p_data[2].dy = 1;
@@ -265,6 +265,8 @@ int game_loop(int no_players){
 
 	int remaining = no_players;
 	int running = true;
+
+	int trail_per_person = ((rows*cols)/12)/no_players;
 	
 	while (running){
 		frame++;
@@ -317,10 +319,10 @@ int game_loop(int no_players){
 				Q(dequeue_push_last(p_data[i].trail_queue_x, p_data[i].x));
 				Q(dequeue_push_last(p_data[i].trail_queue_y, p_data[i].y));
 
-				if (p_data[i].trail_queue_x->size > rows*cols/10){
+				if (p_data[i].trail_queue_x->size > trail_per_person){
 					dequeue_pop_first(p_data[i].trail_queue_x);
 				}
-				if (p_data[i].trail_queue_y->size > rows*cols/10){
+				if (p_data[i].trail_queue_y->size > trail_per_person){
 					dequeue_pop_first(p_data[i].trail_queue_y);
 				}
 			}
