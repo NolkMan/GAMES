@@ -65,6 +65,20 @@ const char DIGITS[10][5][6] = {
 	 " ### "},
 };
 
+void draw_controls(int y, int x, int primary_color, int secondary_color, char up, char down, char left, char right){
+	attron(COLOR_PAIR(secondary_color));
+	mvprintw(y,  x+3,"     ");
+	mvprintw(y+1,x+3,"     ");
+	mvprintw(y+2,x,"           ");
+	mvprintw(y+3,x,"           ");
+	mvprintw(y+4,x,"           ");
+	attron(COLOR_PAIR(primary_color));
+	mvprintw(y+1, x+5, "%c", up);
+	mvprintw(y+3, x+5, "%c", down);
+	mvprintw(y+3, x+2, "%c", left);
+	mvprintw(y+3, x+8, "%c", right);
+}
+
 void draw_digit(int y, int x, int number){
 	for (int i=0 ; i < 5; i++){
 		for (int j = 0; j < 5; j++){
@@ -665,7 +679,7 @@ int menu_loop(){
 			}
 		}
 
-		clear();
+		erase();
 		attron(COLOR_PAIR(10));
 		for (int i=0; i < MENU_OPTIONS; i++){
 			mvprintw(2+i, 2, "%s", MENU_STRINGS[i]);
@@ -673,6 +687,8 @@ int menu_loop(){
 		attron(COLOR_PAIR(11));
 		mvprintw(2+option, 2, "%s", MENU_STRINGS[option]);
 
+		draw_controls(10, 15, 10, 3, 'W', 'S', 'A', 'D');
+		draw_controls(10, 30, 10, 4, 'I', 'K', 'J', 'L');
 
 		refresh();
 		usleep(60000);
