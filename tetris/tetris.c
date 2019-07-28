@@ -629,7 +629,7 @@ void p2_game_loop(){
 
 		if (player_died[0] && player_died[1]){
 			mvprintw(rows/2, cols-7, "Player %d wins!", score[0] > score[1] ? 1 : 2);
-			mvprintw(rows/2 + 2, cols-11, "Press b to go back to menu", score[0] > score[1] ? 1 : 2);
+			mvprintw(rows/2 + 2, cols-14, "Press b to go back to menu", score[0] > score[1] ? 1 : 2);
 			can_go_back = TRUE;
 		}
 
@@ -731,3 +731,4 @@ int main(){
 	endwin();
 	return 0;
 }
+
