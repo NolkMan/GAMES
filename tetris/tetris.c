@@ -366,7 +366,7 @@ int can_rotate(int board[26][14], int piece, int rot, int y, int x){
 	return TRUE;
 }
 
-int can_fall(int board[4][14], int piece, int rot, int y, int x){
+int can_fall(int board[26][14], int piece, int rot, int y, int x){
 	int cy = y+1;
 	for (int i=0 ; i < 4; i++){
 		for (int j=0 ; j < 4; j++){
